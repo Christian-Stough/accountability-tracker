@@ -24,20 +24,20 @@ export async function getTasks(session: Session): Promise<Tasks[]> {
   return tasks;
 }
 
-export async function completeTask(taskId: number) {
+export async function changeTaskComplete(taskId: number, completed: boolean) {
   await db.tasks.updateMany({
     where: {
       taskId,
     },
     data: {
-      completed: true,
+      completed: completed,
     },
   });
   revalidatePath("/");
 }
 
 export async function addTask(id: string, name: string) {
-  await db.tasks.create({
+  const newTask = await db.tasks.create({
     data: {
       id: id,
       name: name,
@@ -45,7 +45,7 @@ export async function addTask(id: string, name: string) {
     },
   });
 
-  revalidatePath("/");
+  return newTask;
 }
 
 export async function deleteTask(taskId: number) {

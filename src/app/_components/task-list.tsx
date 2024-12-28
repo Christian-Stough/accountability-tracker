@@ -1,5 +1,5 @@
 import type { Session } from "next-auth";
-import React, { use, useState } from "react";
+import React, { use, useActionState, useState } from "react";
 import { addTask, getTasks } from "~/server/queries";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Separator } from "~/components/ui/separator";
@@ -18,6 +18,20 @@ export default function TaskList({
 }) {
   const [addMode, setAddMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [addError, addAction, addPending] = useActionState(async () => {
+    const input = document.getElementById("add-input") as HTMLInputElement;
+
+    const value = input.value;
+
+    setAddMode(false);
+
+    const newTask = await addTask(session.user.id, value);
+
+    setClientTasks([...clientTasks, newTask]);
+  }, null);
+
+  const [clientTasks, setClientTasks] = useState<Tasks[]>(tasks);
 
   return (
     <div className="flex w-full max-w-[650px] flex-col gap-4">
@@ -47,17 +61,7 @@ export default function TaskList({
         {addMode && (
           <>
             <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-
-                const input = document.getElementById(
-                  "add-input",
-                ) as HTMLInputElement;
-
-                const value = input.value;
-
-                await addTask(session.user.id, value);
-              }}
+              action={addAction}
               className={`flex w-full items-center gap-2 rounded-sm p-4`}
             >
               <Input id="add-input" placeholder="Enter Task..." />
@@ -68,14 +72,21 @@ export default function TaskList({
             <Separator className="w-full" />
           </>
         )}
-        {tasks.map((task, index) => (
+        {clientTasks.map((task, index) => (
           <div
             className="flex flex-col gap-2"
             key={`${task.id}_${task.taskId}`}
           >
-            <TaskCheckbox task={task} editable={editMode} />
+            <TaskCheckbox
+              task={task}
+              editable={editMode}
+              clientTasks={clientTasks}
+              setClientTasks={setClientTasks}
+            />
 
-            {index !== tasks.length - 1 && <Separator className="w-full" />}
+            {index !== clientTasks.length - 1 && (
+              <Separator className="w-full" />
+            )}
           </div>
         ))}
       </div>
