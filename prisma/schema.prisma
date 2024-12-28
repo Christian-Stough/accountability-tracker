@@ -4,7 +4,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url      = env("POSTGRES_PRISMA_URL")
+
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Account {
@@ -53,7 +55,9 @@ model VerificationToken {
 }
 
 model Tasks {
-    id String    @id @default(cuid())
-    name String
-    completed Boolean
+  id String 
+  taskId Int @id @default(autoincrement())
+  name String
+  lastCompleted DateTime?
+  completed Boolean
 }

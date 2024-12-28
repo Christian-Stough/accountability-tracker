@@ -14,3 +14,14 @@ export async function getTasks(session: Session): Promise<Tasks[]> {
 
   return tasks;
 }
+
+export async function updateTask(id: number, isChecked: boolean) {
+  await db.tasks.updateMany({
+    where: {
+      taskId: id,
+    },
+    data: {
+      completed: isChecked,
+    },
+  });
+}

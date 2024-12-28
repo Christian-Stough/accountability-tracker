@@ -66,7 +66,11 @@ function Home({ session }: { session: Session }) {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem asChild>
-                <button onClick={signOutOfAccount} type="submit">
+                <button
+                  className="w-full"
+                  onClick={signOutOfAccount}
+                  type="submit"
+                >
                   Sign Out
                 </button>
               </DropdownMenuItem>
