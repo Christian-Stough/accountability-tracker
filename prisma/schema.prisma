@@ -58,6 +58,5 @@ model Tasks {
   id String 
   taskId Int @id @default(autoincrement())
   name String
-  lastCompleted DateTime?
   completed Boolean
 }
