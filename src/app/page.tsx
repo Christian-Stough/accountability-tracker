@@ -32,7 +32,7 @@ function SignInScreen() {
       }}
       className="flex h-fit min-h-screen w-full flex-col items-center justify-center gap-4 px-4 py-2"
     >
-      <h1 className="text-5xl font-semibold">Accountability Tracker</h1>
+      <h1 className="text-5xl font-semibold">Hand of Accountability</h1>
       <Button type="submit" className="relative w-full max-w-[400px]">
         <DiscordIcon className="top-4.5 absolute left-4 size-6 text-white" />
         Sign In With Discord
@@ -50,7 +50,7 @@ function Home({ session }: { session: Session }) {
   return (
     <main className="flex h-fit min-h-screen w-full flex-col items-center gap-8 px-4 py-8">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-semibold">Accountability Tracker</h1>
+        <h1 className="text-5xl font-semibold">Hand of Accountability</h1>
         <div className="flex items-center gap-2 text-xl">
           <h2>for</h2>
           <p className="font-semibold">{session.user.name}</p>
@@ -62,7 +62,7 @@ function Home({ session }: { session: Session }) {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Settings</DropdownMenuLabel>
               <DropdownMenuSeparator />
 
               <DropdownMenuItem asChild>

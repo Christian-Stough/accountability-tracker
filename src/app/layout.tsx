@@ -5,8 +5,8 @@ import { type Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
-  title: "Tracker",
-  description: "Tracker",
+  title: "Hand of Accountability",
+  description: "Hand of Accountability Tracker",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

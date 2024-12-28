@@ -3,6 +3,7 @@
 import type { Session } from "next-auth";
 import { db } from "./db";
 import type { Tasks } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function getTasks(session: Session): Promise<Tasks[]> {
   // eslint-disable-next-line
@@ -10,18 +11,49 @@ export async function getTasks(session: Session): Promise<Tasks[]> {
     where: {
       id: session.user.id,
     },
+    orderBy: [
+      {
+        completed: "asc",
+      },
+      {
+        taskId: "desc",
+      },
+    ],
   });
 
   return tasks;
 }
 
-export async function updateTask(id: number, isChecked: boolean) {
+export async function completeTask(taskId: number) {
   await db.tasks.updateMany({
     where: {
-      taskId: id,
+      taskId,
     },
     data: {
-      completed: isChecked,
+      completed: true,
     },
   });
+  revalidatePath("/");
+}
+
+export async function addTask(id: string, name: string) {
+  await db.tasks.create({
+    data: {
+      id: id,
+      name: name,
+      completed: false,
+    },
+  });
+
+  revalidatePath("/");
+}
+
+export async function deleteTask(taskId: number) {
+  await db.tasks.delete({
+    where: {
+      taskId,
+    },
+  });
+
+  revalidatePath("/");
 }
